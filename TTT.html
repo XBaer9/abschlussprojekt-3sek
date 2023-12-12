@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <style>
+        body {
+            font-family: 'Arial';
+            text-align: center;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 5px;
+            margin: 20px auto;
+            max-width: 300px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            border: 1px solid #ccc;
+            font-size: 2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .cell:hover {
+            background-color: #f0f0f0;
+        }
+
+        .win-message {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #27ae60;
+        }
+
+        .tie-message {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #3498db;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Tic Tac Toe</h1>
+
+   <button onclick="goToHome()">Go to home.html</button>
+
+
+        <script>
+            function goToHome() {
+                window.location.href = 'home.html';
+            }
+
+        </script>
+
+        <div id="board">
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+        </div>
+
+        <div class="win-message" style="display: none;"></div>
+        <div class="tie-message" style="display: none;">It's a tie!</div>
+        <script>
+            const cells = document.querySelectorAll('.cell');
+            let currentPlayer = 'X';
+            let gameBoard = ['', '', '', '', '', '', '', '', ''];
+            let gameActive = true;
+
+            const checkWinner = () => {
+                const winPatterns = [
+                    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+                    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+                    [0, 4, 8], [2, 4, 6]             // Diagonals
+                ];
+
+                for (const pattern of winPatterns) {
+                    const [a, b, c] = pattern;
+                    if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+                        return gameBoard[a];
+                    }
+                }
+
+                return null;
+            };
+
+            const displayWinner = (winner) => {
+                const message = winner ? `Player ${winner} wins!` : 'It\'s a tie!';
+                alert(message);
+                gameActive = false;
+            };
+
+            cells.forEach((cell, index) => {
+                cell.addEventListener('click', () => {
+                    if (gameActive && !gameBoard[index]) {
+                        cell.textContent = currentPlayer;
+                        gameBoard[index] = currentPlayer;
+
+                        const winner = checkWinner();
+                        if (winner) {
+                            displayWinner(winner);
+                        } else if (!gameBoard.includes('')) {
+                            displayWinner(null); // It's a tie
+                        } else {
+                            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                        }
+                    }
+                });
+            });
+
+        </script>
+</body>
+
+</html>
