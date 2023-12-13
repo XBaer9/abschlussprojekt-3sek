@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-
+    <title>Document</title>
     <style>
         body {
             background-color: black;
@@ -15,11 +14,10 @@
         h1 {
             color: white;
             font-family: monospace;
-            font-size: 100px;
             text-align: center;
         }
 
-       
+
         button {
             display: block;
             margin: auto;
@@ -32,7 +30,7 @@
             cursor: pointer;
             border: 2px solid white;
             color: #ffffff;
-            background-color:black;
+            background-color: black;
             border-radius: 5px;
             transition: background-color 0.3s ease-in-out;
         }
@@ -46,21 +44,16 @@
 </head>
 
 <body>
-    <h1>Home</h1>
-    <button onclick="goToCF()">Coin Flip</button>
-    <button onclick="goToTTT()">Tic Tac Toe</button>
+
+    <h1>Coin Flip</h1>
+
+    <button onclick="goToHome()">Home</button>
 
     <script>
-        function goToTTT() {
-            window.location.href = 'TTT.html';
+        function goToHome() {
+            window.location.href = 'home.html';
         }
-        
-        
-    </script>
-    <script>function goToCF() {
-        window.location = 'CF.html'
-    }
-    
+
     </script>
 </body>
 

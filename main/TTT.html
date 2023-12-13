@@ -7,15 +7,15 @@
     <title>Tic Tac Toe</title>
     <style>
         body {
-            font-family: 'Arial';
+            font-family: monospace;
             text-align: center;
-            background-color: #f5f5f5;
+            background-color: black;
             margin: 0;
             padding: 0;
         }
 
         h1 {
-            color: #333;
+            color: white;
         }
 
         #board {
@@ -24,7 +24,7 @@
             gap: 5px;
             margin: 20px auto;
             max-width: 300px;
-            background-color: #fff;
+            background-color: black;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
@@ -32,18 +32,21 @@
         .cell {
             width: 100px;
             height: 100px;
-            border: 1px solid #ccc;
+            border: 1px solid white;
             font-size: 2em;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: background-color 0.3s ease-in-out;
+            color: white;
         }
 
         .cell:hover {
-            background-color: #f0f0f0;
+            background-color: white;
         }
+
+
 
         .win-message {
             font-size: 1.2em;
@@ -58,84 +61,107 @@
             margin-top: 20px;
             color: #3498db;
         }
+
+
+
+        button {
+            display: block;
+            margin: auto;
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+            border: 2px solid white;
+            color: #ffffff;
+            background-color:black;
+            border-radius: 5px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: rgba(255, 255, 255, 0.400);
+        }
     </style>
 </head>
 
 <body>
     <h1>Tic Tac Toe</h1>
 
-   <button onclick="goToHome()">Go to home.html</button>
+    <button onclick="goToHome()">Home</button>
 
 
-        <script>
-            function goToHome() {
-                window.location.href = 'home.html';
+    <script>
+        function goToHome() {
+            window.location.href = 'home.html';
+        }
+
+    </script>
+
+    <div id="board">
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+    </div>
+
+    <div class="win-message" style="display: none;"></div>
+    <div class="tie-message" style="display: none;">It's a tie!</div>
+    <script>
+        const cells = document.querySelectorAll('.cell');
+        let currentPlayer = 'X';
+        let gameBoard = ['', '', '', '', '', '', '', '', ''];
+        let gameActive = true;
+
+        const checkWinner = () => {
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+                [0, 4, 8], [2, 4, 6]             // Diagonals
+            ];
+
+            for (const pattern of winPatterns) {
+                const [a, b, c] = pattern;
+                if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+                    return gameBoard[a];
+                }
             }
 
-        </script>
+            return null;
+        };
 
-        <div id="board">
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-            <div class="cell"></div>
-        </div>
+        const displayWinner = (winner) => {
+            const message = winner ? `Player ${winner} wins!` : 'It\'s a tie!';
+            alert(message);
+            gameActive = false;
+        };
 
-        <div class="win-message" style="display: none;"></div>
-        <div class="tie-message" style="display: none;">It's a tie!</div>
-        <script>
-            const cells = document.querySelectorAll('.cell');
-            let currentPlayer = 'X';
-            let gameBoard = ['', '', '', '', '', '', '', '', ''];
-            let gameActive = true;
+        cells.forEach((cell, index) => {
+            cell.addEventListener('click', () => {
+                if (gameActive && !gameBoard[index]) {
+                    cell.textContent = currentPlayer;
+                    gameBoard[index] = currentPlayer;
 
-            const checkWinner = () => {
-                const winPatterns = [
-                    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-                    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-                    [0, 4, 8], [2, 4, 6]             // Diagonals
-                ];
-
-                for (const pattern of winPatterns) {
-                    const [a, b, c] = pattern;
-                    if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
-                        return gameBoard[a];
+                    const winner = checkWinner();
+                    if (winner) {
+                        displayWinner(winner);
+                    } else if (!gameBoard.includes('')) {
+                        displayWinner(null); // It's a tie
+                    } else {
+                        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
                     }
                 }
-
-                return null;
-            };
-
-            const displayWinner = (winner) => {
-                const message = winner ? `Player ${winner} wins!` : 'It\'s a tie!';
-                alert(message);
-                gameActive = false;
-            };
-
-            cells.forEach((cell, index) => {
-                cell.addEventListener('click', () => {
-                    if (gameActive && !gameBoard[index]) {
-                        cell.textContent = currentPlayer;
-                        gameBoard[index] = currentPlayer;
-
-                        const winner = checkWinner();
-                        if (winner) {
-                            displayWinner(winner);
-                        } else if (!gameBoard.includes('')) {
-                            displayWinner(null); // It's a tie
-                        } else {
-                            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-                        }
-                    }
-                });
             });
+        });
 
-        </script>
+    </script>
 </body>
 
 </html>
