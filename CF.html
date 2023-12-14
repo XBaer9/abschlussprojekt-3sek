@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Coin Flip Game</title>
     <style>
         body {
             background-color: black;
@@ -17,10 +17,37 @@
             text-align: center;
         }
 
+        .coin {
+            max-width: 100%;
+            max-height: 100%;
+            width: 300px;
+            height: 300px;
+            background-size: 300px;
+            margin: 20px auto;
+            transition: transform 0.6s ease;
+            transform-style: preserve-3d;
+            transform: rotateY(0deg); /* Initial rotation set to 0 degrees for heads side */
+        }
+
+        .coin .side {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            backface-visibility: hidden;
+        }
+
+        .coin.heads {
+            background-image: url(Heads.png);
+        }
+
+        .coin.tails {
+            background-image: url(Tails.png);
+        }
 
         button {
+            font-family: monospace;
             display: block;
-            margin: auto;
+            margin: 20px auto;
             display: inline-block;
             padding: 10px 20px;
             font-size: 16px;
@@ -39,22 +66,42 @@
             background-color: rgba(255, 255, 255, 0.400);
         }
     </style>
-
-
 </head>
 
 <body>
 
     <h1>Coin Flip</h1>
+    <div id="result" class="coin heads" onclick="flipCoin()">
+        <div class="side heads"></div>
+        <div class="side tails"></div>
+    </div>
 
     <button onclick="goToHome()">Home</button>
 
     <script>
-        function goToHome() {
-            window.location.href = 'home.html';
+        let isFlipped = false;
+
+        function flipCoin() {
+            const resultElement = document.getElementById('result');
+            resultElement.classList.remove('heads', 'tails');
+
+            const result = Math.floor(Math.random() * 2);
+
+            if (result === 0) {
+                resultElement.classList.add('heads');
+            } else {
+                resultElement.classList.add('tails');
+            }
+
+            resultElement.style.transform = isFlipped ? 'rotateY(0deg)' : 'rotateY(360deg)';
+            isFlipped = !isFlipped;
         }
 
+        function goToHome() {
+            window.location.href = 'index.html';
+        }
     </script>
+
 </body>
 
 </html>
